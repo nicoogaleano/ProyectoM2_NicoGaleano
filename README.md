@@ -1,4 +1,5 @@
-# API REST - Gestión de Autores y Publicaciones (M2 Project)
+- **URL Pública del Backend:** https://m2-proyecto-api-production.up.railway.app
+- **Swagger UI (Documentación en Producción):** https://m2-proyecto-api-production.up.railway.app/api-docs
 
 ## Descripción del Proyecto
 Esta API REST permite administrar **Autores** y **Publicaciones (Posts)** implementando Node.js, Express, PostgreSQL para el almacenamiento persistente, Jest y Supertest para pruebas automatizadas, y Swagger (OpenAPI) para la documentación interactiva.
