@@ -67,7 +67,41 @@ La documentación e interfaz interactiva para probar los endpoints se encuentra 
 
 - **Local:** `http://localhost:3000/api-docs`
 
+## 📷 Previews 
+
+### Swagger UI
+![Swagger Documentation](./docs/swagger-Documentation.png)
+
+### Endpoints de Autores
+![Authors Endpoints](./docs/authors-endpoints.png)
+
+### Endpoints de Posts
+![Posts Endpoints](./docs/posts-endpoints.png)
 ---
+
+### 📌 Tabla de Endpoints
+
+#### Autores
+| Método | Endpoint | Descripción |
+| :--- | :--- | :--- |
+| `GET` | `/authors` | Obtener todos los autores |
+| `POST` | `/authors` | Crear un nuevo autor |
+| `GET` | `/authors/{id}` | Obtener un autor por ID |
+| `PUT` | `/authors/{id}` | Actualizar un autor por ID |
+| `DELETE` | `/authors/{id}` | Eliminar un autor por ID |
+
+#### Posts
+| Método | Endpoint | Descripción |
+| :--- | :--- | :--- |
+| `GET` | `/posts` | Obtener todos los posts |
+| `POST` | `/posts` | Crear un nuevo post |
+| `GET` | `/posts/{id}` | Obtener un post por ID |
+| `PUT` | `/posts/{id}` | Actualizar un post por ID |
+| `DELETE` | `/posts/{id}` | Eliminar un post por ID |
+| `GET` | `/posts/author/{authorId}` | Obtener todos los posts de un autor específico |
+
+---
+
 
 ## Guía de Deployment en Railway
 
