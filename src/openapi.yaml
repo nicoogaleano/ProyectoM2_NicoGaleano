@@ -4,6 +4,8 @@ info:
   version: 1.0.0
   description: Documentación de la API REST desarrollada con Node.js, Express y PostgreSQL.
 servers:
+  - url: https://m2-proyecto-api-production.up.railway.app
+    description: Servidor de Producción (Railway)
   - url: http://localhost:3000
     description: Servidor Local
 

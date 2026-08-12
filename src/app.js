@@ -5,6 +5,11 @@ const postsRoutes = require('./routes/postsRoutes.js');
 const app = express();
 app.use(express.json());
 
+// Habilitar CORS para todas las solicitudes
+const cors = require('cors');
+app.use(cors());
+app.use(express.json());
+
 // Middleware para validar el tipo de dato
 const swaggerUi = require('swagger-ui-express');
 const YAML = require('yamljs');
