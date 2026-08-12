@@ -1,0 +1,266 @@
+openapi: 3.0.0
+info:
+  title: API REST - Autores y Posts
+  version: 1.0.0
+  description: Documentación de la API REST desarrollada con Node.js, Express y PostgreSQL.
+servers:
+  - url: http://localhost:3000
+    description: Servidor Local
+
+paths:
+  /authors:
+    get:
+      summary: Obtener todos los autores
+      tags:
+        - Autores
+      responses:
+        '200':
+          description: Lista de autores obtenida correctamente
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Author'
+    post:
+      summary: Crear un nuevo autor
+      tags:
+        - Autores
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AuthorInput'
+      responses:
+        '201':
+          description: Autor creado exitosamente
+        '400':
+          description: Datos de entrada inválidos
+        '409':
+          description: El email ingresado ya se encuentra registrado
+
+  /authors/{id}:
+    get:
+      summary: Obtener un autor por ID
+      tags:
+        - Autores
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Autor encontrado
+        '404':
+          description: Autor no encontrado
+    put:
+      summary: Actualizar un autor por ID
+      tags:
+        - Autores
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AuthorInput'
+      responses:
+        '200':
+          description: Autor actualizado correctamente
+        '404':
+          description: Autor no encontrado
+        '409':
+          description: El email ya está en uso
+    delete:
+      summary: Eliminar un autor por ID
+      tags:
+        - Autores
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: Autor eliminado con éxito
+        '404':
+          description: Autor no encontrado
+
+  /posts:
+    get:
+      summary: Obtener todos los posts
+      tags:
+        - Posts
+      responses:
+        '200':
+          description: Lista de posts obtenida con éxito
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Post'
+    post:
+      summary: Crear un nuevo post
+      tags:
+        - Posts
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PostInput'
+      responses:
+        '201':
+          description: Post creado exitosamente
+        '400':
+          description: Datos faltantes o inválidos
+
+  /posts/author/{author_id}:
+    get:
+      summary: Obtener las publicaciones de un autor específico
+      tags:
+        - Posts
+      parameters:
+        - in: path
+          name: author_id
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Publicaciones obtenidas correctamente
+        '404':
+          description: Autor no encontrado
+
+  /posts/{id}:
+    get:
+      summary: Obtener un post por ID
+      tags:
+        - Posts
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Post encontrado
+        '404':
+          description: Post no encontrado
+    put:
+      summary: Actualizar un post por ID
+      tags:
+        - Posts
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PostInput'
+      responses:
+        '200':
+          description: Post actualizado
+        '404':
+          description: Post no encontrado
+    delete:
+      summary: Eliminar un post por ID
+      tags:
+        - Posts
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: Post eliminado
+        '404':
+          description: Post no encontrado
+
+components:
+  schemas:
+    Author:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        name:
+          type: string
+          example: "Ana García"
+        email:
+          type: string
+          example: "ana.garcia@example.com"
+        bio:
+          type: string
+          example: "Desarrolladora Backend"
+    AuthorInput:
+      type: object
+      required:
+        - name
+        - email
+      properties:
+        name:
+          type: string
+          example: "Nico Galeano"
+        email:
+          type: string
+          example: "nico@example.com"
+        bio:
+          type: string
+          example: "Desarrollador Fullstack"
+    Post:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        title:
+          type: string
+          example: "Introducción a Node.js"
+        content:
+          type: string
+          example: "Contenido del post..."
+        author_id:
+          type: integer
+          example: 1
+        published:
+          type: boolean
+          example: true
+    PostInput:
+      type: object
+      required:
+        - title
+        - content
+        - author_id
+      properties:
+        title:
+          type: string
+          example: "Nuevo Post de Express"
+        content:
+          type: string
+          example: "Detalles sobre rutas y controladores..."
+        author_id:
+          type: integer
+          example: 1
+        published:
+          type: boolean
+          example: false
