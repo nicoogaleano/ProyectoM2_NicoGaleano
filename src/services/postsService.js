@@ -43,75 +43,57 @@ let posts = [
 
 let nextId = 6;
 
-// src/services/authors.service.js
-const pool = require('../config/db');
+import pool from '../config/db.js';
 
-
-const getAllPosts = async () => {
-  const result = await pool.query('SELECT * FROM posts');
-  return result.rows; // Retorna el array de publicaciones
-};
-
-
-const getAllAuthors = async () => {
-  const query = 'SELECT * FROM authors ORDER BY id ASC;';
+// Obtener todos los posts
+export const getAllPosts = async () => {
+  const query = 'SELECT * FROM posts ORDER BY id ASC';
   const { rows } = await pool.query(query);
   return rows;
 };
 
-const getAuthorById = async (id) => {
-  const result = await pool.query('SELECT * FROM authors WHERE id = $1', [id]);
-  return result.rows[0];
-};
-
-const getPostById = async (id) => {
-  const result = await pool.query('SELECT * FROM posts WHERE id = $1', [id]);
-  return result.rows[0]; // Retorna undefined si el ID no existe en la DB
-};
-
-const getPostsByAuthor = async (authorId) => {
-  const result = await pool.query('SELECT * FROM posts WHERE author_id = $1', [authorId]);
-  return result.rows;
-};
-
-const createAuthor = async (data) => {
-  const { name, email, bio } = data;
-  const query = `
-    INSERT INTO authors (name, email, bio)
-    VALUES ($1, $2, $3)
-    RETURNING *;
-  `;
-  const { rows } = await pool.query(query, [name, email, bio || null]);
+// Obtener post por ID
+export const getPostById = async (id) => {
+  const query = 'SELECT * FROM posts WHERE id = $1';
+  const { rows } = await pool.query(query, [id]);
   return rows[0];
 };
 
-const updateAuthor = async (id, data) => {
-  const { name, email, bio } = data;
-  
-  // Usamos COALESCE para actualizar solo los valores que se envíen
+// Crear post
+export const createPost = async ({ title, content, author_id, published = false }) => {
   const query = `
-    UPDATE authors
-    SET 
-      name = COALESCE($1, name),
-      email = COALESCE($2, email),
-      bio = COALESCE($3, bio)
-    WHERE id = $4
-    RETURNING *;
+    INSERT INTO posts (title, content, author_id, published)
+    VALUES ($1, $2, $3, $4)
+    RETURNING *
   `;
-  
-  const { rows } = await pool.query(query, [name, email, bio, id]);
-  return rows[0] || null;
+  const values = [title, content, author_id, published];
+  const { rows } = await pool.query(query, values);
+  return rows[0];
 };
 
-const deleteAuthor = async (id) => {
-  const query = 'DELETE FROM authors WHERE id = $1 RETURNING id;';
+// Actualizar post
+export const updatePost = async (id, { title, content, published }) => {
+  const query = `
+    UPDATE posts
+    SET title = $1, content = $2, published = $3
+    WHERE id = $4
+    RETURNING *
+  `;
+  const values = [title, content, published, id];
+  const { rows } = await pool.query(query, values);
+  return rows[0];
+};
+
+// Eliminar post
+export const deletePost = async (id) => {
+  const query = 'DELETE FROM posts WHERE id = $1 RETURNING *';
   const { rows } = await pool.query(query, [id]);
-  return rows.length > 0;
+  return rows[0];
 };
 
-// src/services/postsService.js
-module.exports = {
- getAllPosts,
-  getPostById,
-  getPostsByAuthor,
+// Obtener posts por autor
+export const getPostsByAuthorId = async (authorId) => {
+  const query = 'SELECT * FROM posts WHERE author_id = $1 ORDER BY id ASC';
+  const { rows } = await pool.query(query, [authorId]);
+  return rows;
 };
