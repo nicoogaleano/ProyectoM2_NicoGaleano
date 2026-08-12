@@ -16,8 +16,8 @@ Esta API REST permite administrar **Autores** y **Publicaciones (Posts)** implem
 
 ### 1. Clonar el repositorio e instalar dependencias
 ```bash
-git clone <URL_DE_TU_REPOSITORIO_GITHUB>
-cd <NOMBRE_DE_TU_REPOSITORIO>
+git clone https://github.com/nicoogaleano/M2-proyecto-api.git
+cd M2-proyecto-api
 npm install
 ```
 
