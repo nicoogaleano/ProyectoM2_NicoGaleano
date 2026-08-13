@@ -43,24 +43,21 @@ let posts = [
 
 let nextId = 6;
 
-import pool from '../config/db.js';
+const pool = require('../config/db.js'); // Verificá la ruta exacta a tu db.js
 
-// Obtener todos los posts
-export const getAllPosts = async () => {
+const getAllPosts = async () => {
   const query = 'SELECT * FROM posts ORDER BY id ASC';
   const { rows } = await pool.query(query);
   return rows;
 };
 
-// Obtener post por ID
-export const getPostById = async (id) => {
+const getPostById = async (id) => {
   const query = 'SELECT * FROM posts WHERE id = $1';
   const { rows } = await pool.query(query, [id]);
   return rows[0];
 };
 
-// Crear post
-export const createPost = async ({ title, content, author_id, published = false }) => {
+const createPost = async ({ title, content, author_id, published = false }) => {
   const query = `
     INSERT INTO posts (title, content, author_id, published)
     VALUES ($1, $2, $3, $4)
@@ -71,8 +68,7 @@ export const createPost = async ({ title, content, author_id, published = false 
   return rows[0];
 };
 
-// Actualizar post
-export const updatePost = async (id, { title, content, published }) => {
+const updatePost = async (id, { title, content, published }) => {
   const query = `
     UPDATE posts
     SET title = $1, content = $2, published = $3
@@ -84,16 +80,23 @@ export const updatePost = async (id, { title, content, published }) => {
   return rows[0];
 };
 
-// Eliminar post
-export const deletePost = async (id) => {
+const deletePost = async (id) => {
   const query = 'DELETE FROM posts WHERE id = $1 RETURNING *';
   const { rows } = await pool.query(query, [id]);
   return rows[0];
 };
 
-// Obtener posts por autor
-export const getPostsByAuthorId = async (authorId) => {
+const getPostsByAuthorId = async (authorId) => {
   const query = 'SELECT * FROM posts WHERE author_id = $1 ORDER BY id ASC';
   const { rows } = await pool.query(query, [authorId]);
   return rows;
+};
+
+module.exports = {
+  getAllPosts,
+  getPostById,
+  createPost,
+  updatePost,
+  deletePost,
+  getPostsByAuthorId
 };
